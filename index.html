@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishGuard AI - Intelligent Phishing Detection</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🛡️ PhishGuard AI</h1>
+            <p class="tagline">Intelligent Phishing Detection System</p>
+            <p class="subtitle">Microsoft Imagine Cup 2026 | Powered by Azure AI</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h2>Protect Yourself from 3.4 Billion Daily Phishing Attacks</h2>
+            <p>Advanced AI-powered detection for emails and URLs</p>
+        </section>
+
+        <section class="demo">
+            <div class="demo-box">
+                <h3>Try PhishGuard AI Demo</h3>
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="url">Check URL</button>
+                    <button class="tab-btn" data-tab="email">Analyze Email</button>
+                </div>
+
+                <div class="tab-content active" id="url-tab">
+                    <label for="url-input">Enter URL to analyze:</label>
+                    <input type="url" id="url-input" placeholder="https://example.com">
+                    <button class="btn-primary" onclick="checkURL()">Analyze URL</button>
+                </div>
+
+                <div class="tab-content" id="email-tab">
+                    <label for="email-subject">Email Subject:</label>
+                    <input type="text" id="email-subject" placeholder="Verify your account">
+                    
+                    <label for="email-sender">Sender Email:</label>
+                    <input type="email" id="email-sender" placeholder="sender@example.com">
+                    
+                    <label for="email-body">Email Body:</label>
+                    <textarea id="email-body" rows="5" placeholder="Paste email content here..."></textarea>
+                    
+                    <button class="btn-primary" onclick="checkEmail()">Analyze Email</button>
+                </div>
+
+                <div id="result" class="result hidden"></div>
+            </div>
+        </section>
+
+        <section class="features">
+            <h2>Key Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="icon">🔍</div>
+                    <h3>Real-time Analysis</h3>
+                    <p>Instant detection of phishing attempts with <500ms response time</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🤖</div>
+                    <h3>AI-Powered</h3>
+                    <p>BERT transformer models trained on 82,500+ phishing examples</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">☁️</div>
+                    <h3>Azure AI Services</h3>
+                    <p>Leveraging Microsoft Azure ML and Cognitive Services</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📊</div>
+                    <h3>High Accuracy</h3>
+                    <p>Target >95% accuracy with detailed threat analysis</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="tech-stack">
+            <h2>Technology Stack</h2>
+            <div class="tech-grid">
+                <span class="tech-badge">Azure ML</span>
+                <span class="tech-badge">Python</span>
+                <span class="tech-badge">BERT</span>
+                <span class="tech-badge">FastAPI</span>
+                <span class="tech-badge">PyTorch</span>
+                <span class="tech-badge">scikit-learn</span>
+                <span class="tech-badge">Azure AI</span>
+                <span class="tech-badge">GitHub Pages</span>
+            </div>
+        </section>
+
+        <section class="team">
+            <h2>Team</h2>
+            <div class="team-grid">
+                <div class="team-member">Chetan</div>
+                <div class="team-member">Srikanth</div>
+                <div class="team-member">Nandhitha</div>
+                <div class="team-member">Sreelaxmi</div>
+            </div>
+            <p class="team-info">SPSU | BTech CSE Year 2 | Microsoft Imagine Cup 2026</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>Built for Microsoft Imagine Cup 2026</p>
+        <p><a href="https://github.com/Chetan-code-lrca/PhishGuard-AI-ImagineCup2026" target="_blank">View on GitHub</a></p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
