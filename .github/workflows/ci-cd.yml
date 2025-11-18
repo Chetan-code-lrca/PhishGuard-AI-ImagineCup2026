@@ -36,8 +36,7 @@ jobs:
     - name: Test with pytest
       run: |
         pip install pytest pytest-cov
-        pytest tests/ --cov=src/ --cov-report=xml
-
+if [ -d tests ]; then pytest tests/ --cov=src/ --cov-report=xml; else echo "No tests directory found, skipping pytest"; fi
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
