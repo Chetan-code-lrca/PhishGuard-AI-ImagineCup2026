@@ -99,32 +99,6 @@ PhishGuard-AI-ImagineCup2026/
 | Nandhitha | Frontend Developer | UI/UX design, Web dashboard |
 | Sreelaxmi | Cloud Engineer | Azure setup, API integration, DevOps |
 
-## 📋 Milestones & Timeline
-
-### Phase 1: Foundation (Week 1-2)
-- [x] Repository setup & team onboarding
-- [ ] Azure resources provisioning
-- [ ] Dataset collection & preprocessing
-- [ ] Environment configuration
-
-### Phase 2: Core Development (Week 3-4)
-- [ ] Email analyzer module
-- [ ] URL analyzer module
-- [ ] ML model training & evaluation
-- [ ] Backend API development
-
-### Phase 3: Frontend & Integration (Week 5-6)
-- [ ] Web dashboard UI
-- [ ] Browser extension development
-- [ ] Azure service integration
-- [ ] Real-time alert system
-
-### Phase 4: Testing & Deployment (Week 7-8)
-- [ ] Unit & integration testing
-- [ ] Security audits
-- [ ] Performance optimization
-- [ ] Azure deployment (App Service)
-- [ ] Final documentation
 
 ## 🔑 Key Features
 
