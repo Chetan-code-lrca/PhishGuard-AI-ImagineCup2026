@@ -1,171 +1,260 @@
-# PhishGuard-AI-ImagineCup2026
+# PhishGuard AI — Imagine Cup 2026
 
-**AI-powered phishing detection system with real-time email and URL analysis.** Built for Microsoft Imagine Cup 2026 using Azure AI Services, ML models, and browser extension.
+**AI-assisted phishing detection for suspicious URLs and email content.**
 
-## 🎯 Project Overview
+PhishGuard AI is a cybersecurity project developed for **Microsoft Imagine Cup 2026**. The repository combines a browser/web demonstration, Python-based ML/data-processing components, and planned cloud/AI integrations.
 
-PhishGuard AI is an intelligent cybersecurity solution that detects and prevents phishing attacks through:
-- **Real-time Email Analysis**: Scans incoming emails for phishing indicators
-- **URL Analysis**: Evaluates links for malicious content
-- **Machine Learning Models**: Trained on phishing email datasets for accurate detection
-- **Azure AI Integration**: Leverages Azure Cognitive Services for advanced threat analysis
-- **Browser Extension**: Instant alerts and warnings for suspicious emails/URLs
-- **Web Dashboard**: Centralized monitoring and threat tracking
+> **Current repository status:** In development. The checked-in web experience currently contains a client-side demonstration of URL and email risk analysis. The Azure, backend, browser-extension, and ML components described in the project concept should be treated as development work unless their implementation is present in the current checkout.
 
-## 💻 Tech Stack
+## Features
 
-- **Frontend**: HTML5, CSS3, JavaScript (Web App + Browser Extension)
-- **Backend**: Node.js with Express.js, Python for data processing
-- **Cloud**: Microsoft Azure (Cognitive Services, App Service, Storage)
-- **ML/AI**: Python (scikit-learn, TensorFlow), Azure ML
-- **Database**: Azure SQL Database / MongoDB
-- **APIs**: Azure Text Analytics, Content Moderator, Anomaly Detector
-- **DevOps**: GitHub Actions, Docker (optional)
+The project is intended to provide:
 
-## 📊 Project Structure
+- URL phishing-risk analysis
+- Email-content phishing analysis
+- Machine-learning-based classification
+- Azure AI integration
+- Browser-extension warnings
+- A monitoring/dashboard experience
 
-```
+The current root web demo performs heuristic analysis in JavaScript: it checks URL characteristics such as HTTPS usage, suspicious patterns, URL length, and common shorteners, and checks email text for phishing-related keywords and urgency indicators.
+
+## Tech Stack
+
+| Area | Technology |
+|---|---|
+| Web demo | HTML, CSS, JavaScript |
+| ML / data processing | Python, scikit-learn, pandas, NumPy |
+| NLP | Transformers, PyTorch, NLTK, spaCy |
+| Cloud / AI | Microsoft Azure SDKs |
+| APIs | Flask / FastAPI / Uvicorn dependencies are included for development |
+| Testing | pytest, pytest-cov |
+| Database | SQLAlchemy |
+
+The Python dependency set is defined in `requirements.txt`.
+
+## Repository Structure
+
+```text
 PhishGuard-AI-ImagineCup2026/
-├── src/
-│   ├── data_processing/          # Python ML pipeline
-│   │   ├── __init__.py
-│   │   ├── email_analyzer.py    # Email feature extraction
-│   │   ├── url_analyzer.py      # URL analysis module
-│   │   └── model_trainer.py     # Model training pipeline
-│   ├── backend/                  # Node.js backend
-│   │   ├── server.js
-│   │   ├── routes/
-│   │   └── middleware/
-│   └── extension/                # Browser extension
-│       ├── manifest.json
-│       ├── popup.html
-│       └── content.js
-├── models/                        # Trained ML models
-├── app.js                         # Main application
-├── index.html                     # Web dashboard UI
-├── styles.css                     # UI styling
-├── requirements.txt               # Python dependencies
-├── package.json                   # Node.js dependencies (TODO)
-├── .env.example                   # Environment variables template
-├── .gitignore
+├── .env.example          # Environment-variable template
+├── app.js                # Current client-side phishing-analysis demo
+├── index.html             # Web interface
+├── styles.css             # Web styling
+├── requirements.txt       # Python dependencies
+├── src/                   # Python/backend/extension source
+├── .github/               # GitHub configuration/workflows
 ├── LICENSE
 └── README.md
 ```
 
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js 14+ and npm
-- Python 3.8+
-- Azure account with subscription
-- Git
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Chetan-code-lrca/PhishGuard-AI-ImagineCup2026.git
-   cd PhishGuard-AI-ImagineCup2026
-   ```
-
-2. **Set up environment variables**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your Azure credentials and API keys
-   ```
-
-3. **Install Python dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Install Node.js dependencies** (TODO)
-   ```bash
-   npm install
-   ```
-
-5. **Run the application**
-   ```bash
-   node app.js
-   ```
-   Visit `http://localhost:3000`
-
-## 👥 Team Members & Roles
-
-| Name | Role | Responsibility |
-|------|------|---------------|
-| Chetan | Team Lead | Project coordination, Backend development |
-| Srikanth | ML Engineer | Model training, Data processing pipeline |
-| Nandhitha | Frontend Developer | UI/UX design, Web dashboard |
-| Sreelaxmi | Cloud Engineer | Azure setup, API integration, DevOps |
-
-
-## 🔑 Key Features
-
-✅ **Real-time Detection**: Analyzes emails/URLs as they arrive
-✅ **ML-Powered**: Trained models with 95%+ accuracy
-✅ **Azure Integration**: Enterprise-grade cloud infrastructure
-✅ **User-Friendly**: Simple dashboard and browser extension
-✅ **Scalable**: Designed for enterprise deployment
-✅ **Privacy-Focused**: Local analysis, encrypted data transmission
-
-## 🛠️ Development Workflow
-
-### Creating Issues
-1. Go to the **Issues** tab
-2. Click **New Issue**
-3. Use templates: Bug, Feature, Enhancement
-4. Assign to team member & add labels
-
-### Making Pull Requests
-1. Create feature branch: `git checkout -b feature/your-feature`
-2. Commit changes: `git commit -m "Feature: description"`
-3. Push & create PR: `git push origin feature/your-feature`
-4. Request code review from team members
-5. Merge after approval
-
-### Code Standards
-- JavaScript: ESLint configuration (upcoming)
-- Python: PEP 8 compliance
-- Commit messages: Descriptive, past tense
-- Branch naming: `feature/`, `bugfix/`, `docs/` prefixes
-
-## 📚 Resources
-
-- [Azure Cognitive Services Docs](https://docs.microsoft.com/en-us/azure/cognitive-services/)
-- [Phishing Email Dataset (Kaggle)](https://www.kaggle.com/datasets/naserabdullahalam/phishing-email-dataset)
-- [OWASP Phishing Prevention](https://owasp.org/)
-- [Google Imagine Cup Guidelines](https://imaginecup.microsoft.com/)
-
-## 🔐 Security Considerations
-
-- Never commit `.env` files with real credentials
-- Use Azure Key Vault for secrets management
-- Implement HTTPS for all communications
-- Validate & sanitize all user inputs
-- Regular security audits & updates
-- GDPR compliance for data processing
-
-## 📄 License
-
-MIT License - See LICENSE file for details
-
-## 🤝 Contributing
-
-Contributions welcome! Please:
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request with description
-
-## 📞 Support & Questions
-
-For questions or issues:
-- Create a GitHub Issue
-- Contact: [Team Email] (TODO)
-- Discord: [Link] (TODO)
+Always check the actual repository contents before following documentation for components that are still being developed.
 
 ---
 
-**Last Updated**: November 18, 2025
-**Status**: In Development for Microsoft Imagine Cup 2026
+## Quick Start — Web Demo
+
+If you only want to run the current web demonstration, you do not need Azure or Node.js. You only need a static HTTP server; Python's built-in server is one option.
+
+### 1. Clone
+
+```bash
+git clone https://github.com/Chetan-code-lrca/PhishGuard-AI-ImagineCup2026.git
+cd PhishGuard-AI-ImagineCup2026
+```
+
+### 2. Start a local web server
+
+A local HTTP server is recommended instead of opening `index.html` directly.
+
+If Python 3 is installed:
+
+```bash
+python3 -m http.server 8000
+```
+
+Windows:
+
+```powershell
+py -m http.server 8000
+```
+
+Open:
+
+```text
+http://localhost:8000
+```
+
+### 3. Try the demo
+
+The current JavaScript demo provides two inputs:
+
+- **URL analysis** — evaluates simple suspicious URL characteristics.
+- **Email analysis** — checks the supplied text for phishing-related keywords and urgency indicators.
+
+These are **heuristic demonstration checks**, not a production-grade phishing verdict. A URL being labelled `SAFE` by this demo does not establish that it is safe.
+
+---
+
+## Python / ML Development Setup
+
+The repository also contains Python dependencies for the project's ML, NLP, Azure, API, and data-processing work.
+
+### Prerequisites
+
+Recommended:
+
+- Git
+- Python 3.10–3.12
+- `pip`
+- `venv`
+
+Because the dependency file contains older version ranges for several packages, using a dedicated virtual environment is strongly recommended.
+
+### 1. Create a virtual environment
+
+Linux / macOS:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+Windows PowerShell:
+
+```powershell
+py -m venv .venv
+.venv\Scripts\Activate.ps1
+```
+
+### 2. Install dependencies
+
+```bash
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
+The current `requirements.txt` includes scikit-learn, PyTorch, Transformers, NLTK, spaCy, Azure SDK packages, Flask, FastAPI, URL-analysis libraries, SQLAlchemy, pytest, and development tools.
+
+### 3. Environment variables
+
+If you are working on components that require external services, create a local `.env` file from the template:
+
+```bash
+cp .env.example .env
+```
+
+Windows PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Then fill in the required values for the component you are using.
+
+**Never commit real API keys, passwords, Azure credentials, or other secrets.**
+
+---
+
+## Node.js Note
+
+The older README referred to `package.json` and `npm install`, but there is currently **no root `package.json` in the repository**. Therefore, `npm install` is not required for the current root web demo.
+
+If a future commit adds a Node.js application, its README instructions should be updated together with that application.
+
+---
+
+## Machine Learning Workflow
+
+The Python side of the project is intended to support:
+
+1. Data loading and preprocessing
+2. Feature extraction
+3. Model training
+4. Model evaluation
+5. URL/email classification
+6. Integration with the application layer
+
+The repository contains Python tooling for ML/NLP work. Before running a particular training or inference script, inspect that script for its expected input files, model paths, and environment variables.
+
+Do not assume that the presence of a dependency in `requirements.txt` means the corresponding service is already wired into the current web demo.
+
+---
+
+## Testing
+
+Python tests use pytest. If the relevant test files are present in your checkout, run:
+
+```bash
+python -m pytest
+```
+
+For coverage:
+
+```bash
+python -m pytest --cov
+```
+
+If you are only testing the current static web demo, use the browser directly and verify URL/email analysis behaviour from the interface.
+
+---
+
+## Security Notes
+
+Phishing detection is a security-sensitive task. This repository contains a **development/demo system**, not a guarantee that a URL or email is malicious or legitimate.
+
+When experimenting with real phishing samples:
+
+- Do not open suspicious URLs in your normal browser.
+- Do not submit confidential email contents or credentials to third-party services.
+- Keep API keys and Azure credentials out of Git.
+- Use isolated environments for malware/phishing research.
+- Treat automated classifications as signals that require verification.
+
+---
+
+## Team
+
+| Name | Role | Responsibility |
+|---|---|---|
+| Chetan | Team Lead | Project coordination, backend development |
+| Srikanth | ML Engineer | Model training, data processing |
+| Nandhitha | Frontend Developer | UI/UX and dashboard |
+| Sreelaxmi | Cloud Engineer | Azure integration and DevOps |
+
+---
+
+## Contributing
+
+1. Fork the repository.
+2. Create a feature branch:
+
+```bash
+git checkout -b feature/your-feature
+```
+
+3. Make and test your changes.
+4. Commit them:
+
+```bash
+git add .
+git commit -m "Describe your change"
+```
+
+5. Push the branch:
+
+```bash
+git push origin feature/your-feature
+```
+
+6. Open a pull request.
+
+---
+
+## License
+
+This project is licensed under the **MIT License**. See `LICENSE` for details.
+
+## Project Status
+
+PhishGuard AI is under active development for Imagine Cup 2026. The repository contains both implemented demonstration code and components that are still evolving. Documentation intentionally distinguishes between what can be run from the current checkout and the broader planned architecture.
