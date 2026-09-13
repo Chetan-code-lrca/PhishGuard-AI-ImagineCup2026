@@ -1,32 +1,42 @@
-# PhishGuard AI — Imagine Cup 2026
+# PhishGuard AI
 
-AI-assisted phishing detection for suspicious URLs and email content.
+PhishGuard AI is a phishing-detection project built around URL and email analysis. It was developed for Microsoft Imagine Cup 2026 and includes a browser demo, Python ML/NLP work, and backend/Azure experiments.
 
-PhishGuard AI is a cybersecurity project for Microsoft Imagine Cup 2026. The repository contains a working client-side web demo together with Python-based ML/NLP work and the supporting code for the broader project.
+## What is in the repository
 
-## Current demo
+There are two main parts to the project.
 
-The root web application runs in the browser and provides:
+### Browser demo
 
-- URL risk analysis using URL characteristics such as HTTPS usage, suspicious patterns, URL length, and common shorteners.
-- Email analysis using phishing-related keywords and urgency indicators.
+The root of the repository contains a plain HTML/CSS/JavaScript interface for trying the phishing checks.
 
-The current demo is heuristic. A `SAFE` result is not proof that a URL or email is safe.
+The intended checks include:
 
-The Python side contains ML/data-processing code, NLP dependencies, Azure-related components, API code, and project tooling at different stages of development.
+- URL structure and HTTPS usage
+- suspicious URL patterns
+- long URLs and common URL shorteners
+- phishing-related words in email text
+- urgency indicators in email content
 
-## Tech stack
+The scoring in the browser demo is heuristic. It does not query a trained model or a threat-intelligence service.
 
-- HTML, CSS, JavaScript
-- Python
-- scikit-learn, pandas, NumPy
-- Transformers, PyTorch, NLTK, spaCy
-- Flask / FastAPI / Uvicorn
-- Microsoft Azure SDKs
+The current root demo is still being wired together: the HTML input/button IDs and the JavaScript handlers are not fully aligned yet. The demo files are kept in the repository, but the browser interface needs that small integration fix before the checks can be used end-to-end.
+
+### Python project
+
+The Python side contains the project's machine-learning, NLP, API, Azure, database, and testing work. The dependency file includes:
+
+- NumPy, pandas, scikit-learn
+- PyTorch and Transformers
+- NLTK and spaCy
+- Flask and FastAPI
+- Azure ML and Azure AI SDKs
 - SQLAlchemy
-- pytest / pytest-cov
+- pytest and coverage tools
 
-## Repository structure
+These components are at different stages of development; they are not all part of one currently deployed application.
+
+## Repository layout
 
 ```text
 PhishGuard-AI-ImagineCup2026/
@@ -36,14 +46,20 @@ PhishGuard-AI-ImagineCup2026/
 ├── requirements.txt
 ├── .env.example
 ├── src/
+│   ├── models/
+│   ├── api/
+│   ├── services/
+│   └── ...
 ├── .github/
 ├── LICENSE
 └── README.md
 ```
 
-## Run the web demo
+The exact contents under `src/` are split across the ML, API, and service work from the project.
 
-The web demo only needs Python 3 for a local HTTP server.
+## Run the browser files locally
+
+Because the root interface is a static site, no Node.js setup is required just to serve it.
 
 ```bash
 git clone https://github.com/Chetan-code-lrca/PhishGuard-AI-ImagineCup2026.git
@@ -51,19 +67,21 @@ cd PhishGuard-AI-ImagineCup2026
 python3 -m http.server 8000
 ```
 
-On Windows:
+Windows PowerShell:
 
 ```powershell
 py -m http.server 8000
 ```
 
-Open `http://localhost:8000` in your browser.
+Then open:
 
-Opening `index.html` through a local HTTP server avoids the browser restrictions that can affect local files.
+```text
+http://localhost:8000
+```
 
-## Python development
+## Set up the Python environment
 
-Create a virtual environment:
+Use a virtual environment for the Python work:
 
 ```bash
 python3 -m venv .venv
@@ -81,27 +99,29 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-The Python dependencies cover the project's ML, NLP, Azure, API, database, and testing components.
+The current `requirements.txt` is shared across the ML, NLP, API, Azure, database, and testing code. fileciteturn808file0
 
 ## Environment variables
 
-The repository includes `.env.example` for services that need external credentials.
+The repository provides `.env.example` for components that need external services.
+
+Copy it to a local `.env` file:
 
 ```bash
 cp .env.example .env
 ```
 
-Windows PowerShell:
+PowerShell:
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-Use the variable names required by the component you are running. Never commit real credentials, API keys, passwords, or Azure secrets.
+Keep real API keys, passwords, and cloud credentials out of Git. Only the example variable names belong in the repository.
 
 ## Testing
 
-Run the Python tests with:
+Python tests can be run with:
 
 ```bash
 python -m pytest
@@ -113,25 +133,42 @@ For coverage:
 python -m pytest --cov
 ```
 
-The root browser demo can be checked directly from the web interface.
+The static browser files can be served with the commands above and checked in a browser.
 
-## Security notes
+## How the current browser scoring works
 
-PhishGuard AI is a development and demonstration project. Automated phishing detection should be treated as a signal, not a final verdict.
+The JavaScript demo assigns a risk score from a small set of URL and email signals.
 
-When working with real phishing material, avoid opening suspicious links in your normal browser and avoid sending confidential email content or credentials to external services.
+For URLs it checks things such as:
 
-## Project status
+- missing HTTPS
+- IP-address URLs
+- repeated `@` or hyphen patterns
+- long numeric sequences
+- unusually long URLs
+- common URL shorteners
 
-The browser demo is runnable now. The ML, Azure, backend, browser-extension, and related integrations are still being developed as separate parts of the project.
+For email text it checks phishing-related keywords, urgency words, and a simple punctuation/grammar heuristic. fileciteturn810file0
+
+A low score should not be treated as proof that a message or URL is safe.
+
+## Security
+
+This project is intended for development and demonstration. Do not paste passwords, authentication tokens, private email, or other confidential information into a phishing-analysis tool unless the data is safe to share with the service being used.
+
+Treat suspicious links as untrusted. Do not open them simply to test the detector.
+
+## Current status
+
+The repository is a working project in progress rather than a single finished production system. The browser demo contains the current heuristic scoring logic, while the Python/Azure/ML parts contain the broader detection work and experiments.
 
 ## Team
 
-- Chetan — project lead / backend
+- Chetan — backend / project lead
 - Srikanth — ML and data processing
 - Nandhitha — frontend and UI
 - Sreelaxmi — Azure and DevOps
 
 ## License
 
-MIT License. See `LICENSE` for the full text.
+MIT License. See `LICENSE` for the full terms.
