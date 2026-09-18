@@ -8,7 +8,7 @@ There are two main parts to the project.
 
 ### Browser demo
 
-The root of the repository contains a plain HTML/CSS/JavaScript interface for trying the phishing checks.
+The root of the repository contains a plain HTML/CSS/JavaScript interface for trying the phishing checks locally.
 
 The intended checks include:
 
@@ -18,9 +18,8 @@ The intended checks include:
 - phishing-related words in email text
 - urgency indicators in email content
 
-The scoring in the browser demo is heuristic. It does not query a trained model or a threat-intelligence service.
+The browser scoring is heuristic and runs locally. It does not query a trained model or a threat-intelligence service.
 
-The current root demo is still being wired together: the HTML input/button IDs and the JavaScript handlers are not fully aligned yet. The demo files are kept in the repository, but the browser interface needs that small integration fix before the checks can be used end-to-end.
 
 ### Python project
 
@@ -55,7 +54,7 @@ PhishGuard-AI-ImagineCup2026/
 └── README.md
 ```
 
-The exact contents under `src/` are split across the ML, API, and service work from the project.
+The `src/` tree contains the ML, API, service, and supporting implementation work developed during the project.
 
 ## Run the browser files locally
 
@@ -99,7 +98,7 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-The current `requirements.txt` is shared across the ML, NLP, API, Azure, database, and testing code. fileciteturn808file0
+The current `requirements.txt` is shared across the ML, NLP, API, Azure, database, and testing code.
 
 ## Environment variables
 
@@ -148,7 +147,7 @@ For URLs it checks things such as:
 - unusually long URLs
 - common URL shorteners
 
-For email text it checks phishing-related keywords, urgency words, and a simple punctuation/grammar heuristic. fileciteturn810file0
+For email text it checks phishing-related keywords, urgency words, and a simple punctuation/grammar heuristic.
 
 A low score should not be treated as proof that a message or URL is safe.
 
@@ -160,7 +159,7 @@ Treat suspicious links as untrusted. Do not open them simply to test the detecto
 
 ## Current status
 
-The repository is a working project in progress rather than a single finished production system. The browser demo contains the current heuristic scoring logic, while the Python/Azure/ML parts contain the broader detection work and experiments.
+The root browser demo is a self-contained heuristic URL and email analyzer. The wider repository contains the Python, ML, NLP, API, Azure, database, and testing work from the project at different stages of development.
 
 ## Team
 
