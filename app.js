@@ -1,6 +1,5 @@
-ccccc// PhishGuard AI - JavaScript Functionality
+// PhishGuard AI - Browser demo
 
-// Phishing indicators for demo
 const phishingKeywords = [
     'verify', 'urgent', 'suspended', 'confirm', 'update',
     'click here', 'limited time', 'act now', 'prize',
@@ -9,190 +8,170 @@ const phishingKeywords = [
 ];
 
 const suspiciousURLPatterns = [
-    /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/, // IP addresses
-    /@.*@/, // Multiple @ symbols
-    /\-.*\-.*\-/, // Multiple hyphens
-    /[0-9]{4,}/, // Long number sequences
+    /\d{1,3}(?:\.\d{1,3}){3}/,
+    /@/,
+    /(?:-.*){3,}/,
+    /\d{4,}/
 ];
 
-// URL Analysis Function
+function setResult(type, heading, score, body) {
+    const result = document.getElementById('result');
+    result.className = 'result ' + type + ' show';
+    result.innerHTML =
+        '<h3>' + heading + '</h3>' +
+        '<p><strong>Risk score: ' + score + '%</strong></p>' +
+        body;
+}
+
 function analyzeURL() {
-    const urlInput = document.getElementById('urlInput');
-    const urlResult = document.getElementById('urlResult');
-    const url = urlInput.value.trim();
+    const input = document.getElementById('url-input');
+    const url = input.value.trim();
 
     if (!url) {
-        alert('Please enter a URL');
+        setResult('safe', 'Enter a URL', 0, '<p>Please enter a URL to analyze.</p>');
         return;
     }
 
-    // Simulate API call with loading
-    urlResult.innerHTML = '<p>Analyzing URL...</p>';
-    urlResult.className = 'result show';
+    setResult('safe', 'Analyzing URL...', 0, '<p>Please wait.</p>');
 
     setTimeout(() => {
         let score = 0;
-        let reasons = [];
+        const reasons = [];
+        const normalized = url.toLowerCase();
 
-        // Check for HTTPS
-        if (!url.startsWith('https://')) {
+        if (!normalized.startsWith('https://')) {
             score += 30;
-            reasons.push('❌ Not using secure HTTPS protocol');
+            reasons.push('Not using HTTPS');
         }
 
-        // Check for suspicious patterns
         suspiciousURLPatterns.forEach(pattern => {
             if (pattern.test(url)) {
                 score += 25;
-                reasons.push('⚠️ Contains suspicious URL pattern');
+                reasons.push('Contains a suspicious URL pattern');
             }
         });
 
-        // Check domain length
         if (url.length > 75) {
             score += 20;
-            reasons.push('⚠️ Unusually long URL');
+            reasons.push('Unusually long URL');
         }
 
-        // Check for URL shorteners (demo)
-        const shorteners = ['bit.ly', 'tinyurl', 't.co'];
-        if (shorteners.some(s => url.includes(s))) {
+        const shorteners = ['bit.ly', 'tinyurl.com', 't.co'];
+        if (shorteners.some(domain => normalized.includes(domain))) {
             score += 15;
-            reasons.push('⚠️ Uses URL shortener');
+            reasons.push('Uses a common URL shortener');
         }
 
-        // Display result
+        score = Math.min(score, 100);
+
+        const signalList = reasons.length
+            ? '<p><strong>Signals detected:</strong></p><ul>' +
+              reasons.map(reason => '<li>' + reason + '</li>').join('') +
+              '</ul>'
+            : '<p>No configured suspicious signals were detected.</p>';
+
         if (score > 50) {
-            urlResult.className = 'result phishing show';
-            urlResult.innerHTML = `
-                <h3>🚨 PHISHING DETECTED</h3>
-                <p><strong>Risk Score: ${score}%</strong></p>
-                <p><strong>Reasons:</strong></p>
-                <ul>${reasons.map(r => `<li>${r}</li>`).join('')}</ul>
-                <p><em>⚠️ Do not visit this URL or enter any personal information.</em></p>
-            `;
+            setResult(
+                'phishing',
+                '🚨 High-risk URL indicators',
+                score,
+                signalList +
+                '<p><em>Do not enter credentials or sensitive information on a suspicious site.</em></p>'
+            );
         } else {
-            urlResult.className = 'result safe show';
-            urlResult.innerHTML = `
-                <h3>✅ SAFE</h3>
-                <p><strong>Risk Score: ${score}%</strong></p>
-                <p>This URL appears to be legitimate.</p>
-                ${reasons.length > 0 ? `<p><strong>Minor concerns:</strong></p><ul>${reasons.map(r => `<li>${r}</li>`).join('')}</ul>` : ''}
-                <p><em>Always verify the sender before clicking links.</em></p>
-            `;
+            setResult(
+                'safe',
+                '✅ Lower-risk result',
+                score,
+                signalList +
+                '<p><em>This score is only a heuristic; it does not prove that a URL is safe.</em></p>'
+            );
         }
-    }, 1500);
+    }, 500);
 }
 
-// Email Analysis Function
 function analyzeEmail() {
-    const emailInput = document.getElementById('emailInput');
-    const emailResult = document.getElementById('emailResult');
-    const emailText = emailInput.value.trim().toLowerCase();
+    const subject = document.getElementById('email-subject').value.trim();
+    const sender = document.getElementById('email-sender').value.trim();
+    const body = document.getElementById('email-body').value.trim();
+    const emailText = (subject + ' ' + sender + ' ' + body).toLowerCase();
 
-    if (!emailText) {
-        alert('Please enter email content');
+    if (!emailText.trim()) {
+        setResult('safe', 'Enter email content', 0, '<p>Please enter email content to analyze.</p>');
         return;
     }
 
-    // Simulate API call with loading
-    emailResult.innerHTML = '<p>Analyzing email content...</p>';
-    emailResult.className = 'result show';
+    setResult('safe', 'Analyzing email...', 0, '<p>Please wait.</p>');
 
     setTimeout(() => {
         let score = 0;
-        let detectedKeywords = [];
+        const detectedKeywords = [];
 
-        // Check for phishing keywords
         phishingKeywords.forEach(keyword => {
-            if (emailText.includes(keyword.toLowerCase())) {
+            if (emailText.includes(keyword)) {
                 score += 10;
                 detectedKeywords.push(keyword);
             }
         });
 
-        // Check for urgency indicators
         const urgencyWords = ['immediately', 'urgent', 'expires', 'deadline'];
-        const urgencyCount = urgencyWords.filter(word => emailText.includes(word)).length;
-        if (urgencyCount > 0) {
-            score += urgencyCount * 15;
-        }
+        score += urgencyWords.filter(word => emailText.includes(word)).length * 15;
 
-        // Check for poor grammar (simplified demo)
         const grammarIssues = (emailText.match(/[.!?]\s*[a-z]/g) || []).length;
         if (grammarIssues > 2) {
             score += 15;
         }
 
-        // Display result
+        score = Math.min(score, 100);
+
+        const keywordText = detectedKeywords.length
+            ? '<p><strong>Matched terms:</strong> ' + detectedKeywords.join(', ') + '</p>'
+            : '<p>No configured phishing keywords were detected.</p>';
+
         if (score > 40) {
-            emailResult.className = 'result phishing show';
-            emailResult.innerHTML = `
-                <h3>🚨 PHISHING EMAIL DETECTED</h3>
-                <p><strong>Risk Score: ${Math.min(score, 95)}%</strong></p>
-                <p><strong>Detected suspicious keywords:</strong> ${detectedKeywords.join(', ')}</p>
-                <p><em>⚠️ This email shows signs of phishing. Do not click any links or provide personal information.</em></p>
-                <p><strong>Recommendation:</strong> Delete this email immediately and report it as spam.</p>
-            `;
+            setResult(
+                'phishing',
+                '🚨 Phishing indicators detected',
+                score,
+                keywordText +
+                '<p><em>Verify the sender through a trusted channel before taking action.</em></p>'
+            );
         } else {
-            emailResult.className = 'result safe show';
-            emailResult.innerHTML = `
-                <h3>✅ SAFE</h3>
-                <p><strong>Risk Score: ${score}%</strong></p>
-                <p>This email appears to be legitimate.</p>
-                ${detectedKeywords.length > 0 ? `<p><strong>Minor concerns:</strong> Contains words like "${detectedKeywords.join('", "')}"</p>` : ''}
-                <p><em>Always verify sender identity and be cautious with sensitive information.</em></p>
-            `;
+            setResult(
+                'safe',
+                '✅ Lower-risk result',
+                score,
+                keywordText +
+                '<p><em>This score is only a heuristic; it does not prove that an email is safe.</em></p>'
+            );
         }
-    }, 1500);
+    }, 500);
 }
 
-// Add Enter key support
-document.addEventListener('DOMContentLoaded', function() {
-    const urlInput = document.getElementById('urlInput');
-    const emailInput = document.getElementById('emailInput');
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.tab-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
 
-    if (urlInput) {
-        urlInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                analyzeURL();
-            }
+            button.classList.add('active');
+            document.getElementById(button.dataset.tab + '-tab').classList.add('active');
         });
-    }
+    });
 
-    if (emailInput) {
-        emailInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                analyzeEmail();
-            }
-        });
-    }
-});
+    document.getElementById('url-analyze-btn').addEventListener('click', analyzeURL);
+    document.getElementById('email-analyze-btn').addEventListener('click', analyzeEmail);
 
-// Statistics Counter Animation
-function animateCounter(element, target, duration = 2000) {
-    let start = 0;
-    const increment = target / (duration / 16);
-    
-    const timer = setInterval(() => {
-        start += increment;
-        if (start >= target) {
-            element.textContent = target.toLocaleString() + (element.dataset.suffix || '');
-            clearInterval(timer);
-        } else {
-            element.textContent = Math.floor(start).toLocaleString() + (element.dataset.suffix || '');
+    document.getElementById('url-input').addEventListener('keydown', event => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            analyzeURL();
         }
-    }, 16);
-}
+    });
 
-// Initialize stats animation on page load
-window.addEventListener('load', function() {
-    const stats = document.querySelectorAll('.stat-item h3');
-    stats.forEach(stat => {
-        const target = parseInt(stat.dataset.target || 0);
-        if (target > 0) {
-            animateCounter(stat, target);
+    document.getElementById('email-body').addEventListener('keydown', event => {
+        if (event.key === 'Enter' && event.ctrlKey) {
+            analyzeEmail();
         }
     });
 });
