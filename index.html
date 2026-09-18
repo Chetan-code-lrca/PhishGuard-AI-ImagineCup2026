@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PhishGuard AI - Intelligent Phishing Detection</title>
+    <title>PhishGuard AI - Phishing Detection Demo</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
         <div class="container">
             <h1>🛡️ PhishGuard AI</h1>
-            <p class="tagline">Intelligent Phishing Detection System</p>
-            <p class="subtitle">Microsoft Imagine Cup 2026 | Powered by Azure AI</p>
+            <p class="tagline">Phishing Detection Demo</p>
+            <p class="subtitle">Microsoft Imagine Cup 2026 | Browser-based heuristic analysis</p>
         </div>
     </header>
 
     <main class="container">
         <section class="hero">
-            <h2>Protect Yourself from 3.4 Billion Daily Phishing Attacks</h2>
-            <p>Advanced AI-powered detection for emails and URLs</p>
+            <h2>Analyze suspicious URLs and email text</h2>
+            <p>A lightweight browser demo that scores common phishing indicators locally.</p>
         </section>
 
         <section class="demo">
@@ -32,7 +32,7 @@
                 <div class="tab-content active" id="url-tab">
                     <label for="url-input">Enter URL to analyze:</label>
                     <input type="url" id="url-input" placeholder="https://example.com">
-                    <button class="btn-primary" onclick="checkURL()">Analyze URL</button>
+                    <button class="btn-primary" id="url-analyze-btn" type="button">Analyze URL</button>
                 </div>
 
                 <div class="tab-content" id="email-tab">
@@ -45,7 +45,7 @@
                     <label for="email-body">Email Body:</label>
                     <textarea id="email-body" rows="5" placeholder="Paste email content here..."></textarea>
                     
-                    <button class="btn-primary" onclick="checkEmail()">Analyze Email</button>
+                    <button class="btn-primary" id="email-analyze-btn" type="button">Analyze Email</button>
                 </div>
 
                 <div id="result" class="result hidden"></div>
@@ -58,22 +58,22 @@
                 <div class="feature-card">
                     <div class="icon">🔍</div>
                     <h3>Real-time Analysis</h3>
-                    <p>Instant detection of phishing attempts with <500ms response time</p>
+                    <p>Local analysis without an external API</p>
                 </div>
                 <div class="feature-card">
                     <div class="icon">🤖</div>
                     <h3>AI-Powered</h3>
-                    <p>BERT transformer models trained on 82,500+ phishing examples</p>
+                    <p>Heuristic rules for common phishing indicators</p>
                 </div>
                 <div class="feature-card">
                     <div class="icon">☁️</div>
                     <h3>Azure AI Services</h3>
-                    <p>Leveraging Microsoft Azure ML and Cognitive Services</p>
+                    <p>Repository includes Python and Azure development work</p>
                 </div>
                 <div class="feature-card">
                     <div class="icon">📊</div>
                     <h3>High Accuracy</h3>
-                    <p>Target >95% accuracy with detailed threat analysis</p>
+                    <p>A simple risk score based on configured signals</p>
                 </div>
             </div>
         </section>
@@ -81,13 +81,13 @@
         <section class="tech-stack">
             <h2>Technology Stack</h2>
             <div class="tech-grid">
-                <span class="tech-badge">Azure ML</span>
+                <span class="tech-badge">HTML / CSS / JavaScript</span>
                 <span class="tech-badge">Python</span>
-                <span class="tech-badge">BERT</span>
-                <span class="tech-badge">FastAPI</span>
+                <span class="tech-badge">Azure SDKs</span>
+                <span class="tech-badge">FastAPI / Flask</span>
                 <span class="tech-badge">PyTorch</span>
                 <span class="tech-badge">scikit-learn</span>
-                <span class="tech-badge">Azure AI</span>
+                <span class="tech-badge">GitHub Actions</span>
                 <span class="tech-badge">GitHub Pages</span>
             </div>
         </section>
