@@ -1,217 +1,265 @@
-/* PhishGuard AI - Styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+:root {
+    --bg: #0b1020;
+    --panel: #11182b;
+    --panel-soft: #17213a;
+    --text: #eef2ff;
+    --muted: #b8c0d9;
+    --accent: #6ea8fe;
+    --danger: #ff6b7a;
+    --success: #63d9a0;
+    --border: rgba(255, 255, 255, 0.1);
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     line-height: 1.6;
-    color: #333;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: var(--text);
+    background: radial-gradient(circle at top, #16213d 0%, var(--bg) 55%);
     min-height: 100vh;
 }
 
 .container {
-    max-width: 1200px;
+    width: min(1100px, calc(100% - 32px));
     margin: 0 auto;
-    padding: 20px;
 }
 
 header {
+    padding: 56px 0 28px;
     text-align: center;
-    padding: 40px 20px;
-    color: white;
 }
 
 header h1 {
-    font-size: 3rem;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    margin-bottom: 8px;
 }
 
 header p {
-    font-size: 1.2rem;
-    opacity: 0.95;
+    color: var(--muted);
 }
 
-.badge {
-    display: inline-block;
-    background: rgba(255,255,255,0.2);
-    padding: 8px 16px;
-    border-radius: 20px;
-    margin-top: 10px;
-    font-size: 0.9rem;
-    backdrop-filter: blur(10px);
+.tagline {
+    font-size: 1.25rem;
 }
 
-.main-content {
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-    padding: 40px;
-    margin: 20px 0;
+.subtitle {
+    margin-top: 6px;
+    font-size: 0.95rem;
 }
 
-.feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 25px;
-    margin: 30px 0;
+.hero,
+.demo-box,
+.tech-stack,
+.team,
+.features {
+    background: rgba(17, 24, 43, 0.9);
+    border: 1px solid var(--border);
+    border-radius: 18px;
 }
 
-.feature-card {
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    padding: 25px;
-    border-radius: 10px;
-    text-align: center;
-    transition: transform 0.3s ease;
+.hero {
+    padding: 34px;
+    margin: 22px 0;
 }
 
-.feature-card:hover {
-    transform: translateY(-5px);
-}
-
-.feature-card h3 {
-    color: #667eea;
+.hero h2,
+.features h2,
+.tech-stack h2,
+.team h2 {
     margin-bottom: 10px;
 }
 
-.demo-section {
-    background: #f8f9fa;
-    padding: 30px;
-    border-radius: 10px;
-    margin: 30px 0;
+.hero p {
+    color: var(--muted);
+    max-width: 760px;
 }
 
-.input-group {
+.demo {
+    margin: 22px 0;
+}
+
+.demo-box {
+    padding: 28px;
+}
+
+.tabs {
+    display: flex;
+    gap: 8px;
     margin: 20px 0;
+    flex-wrap: wrap;
 }
 
-.input-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #555;
-}
-
-.input-group input,
-.input-group textarea {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-}
-
-.input-group input:focus,
-.input-group textarea:focus {
-    outline: none;
-    border-color: #667eea;
-}
-
-.btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 12px 30px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
+.tab-btn,
+.btn-primary {
+    border: 0;
+    border-radius: 10px;
+    font: inherit;
     cursor: pointer;
-    transition: transform 0.2s ease;
+}
+
+.tab-btn {
+    padding: 10px 16px;
+    color: var(--muted);
+    background: var(--panel-soft);
+}
+
+.tab-btn.active {
+    color: white;
+    background: var(--accent);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tab-content label {
+    display: block;
+    margin: 14px 0 6px;
     font-weight: 600;
 }
 
-.btn:hover {
-    transform: scale(1.05);
+.tab-content input,
+.tab-content textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #0d1426;
+    color: var(--text);
+    font: inherit;
 }
 
-.btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+.tab-content textarea {
+    resize: vertical;
+}
+
+.btn-primary {
+    margin-top: 16px;
+    padding: 12px 18px;
+    color: #07101f;
+    background: white;
+    font-weight: 700;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
 }
 
 .result {
     margin-top: 20px;
-    padding: 20px;
-    border-radius: 8px;
+    padding: 18px;
+    border-radius: 12px;
     display: none;
-}
-
-.result.safe {
-    background: #d4edda;
-    border: 2px solid #28a745;
-    color: #155724;
-}
-
-.result.phishing {
-    background: #f8d7da;
-    border: 2px solid #dc3545;
-    color: #721c24;
 }
 
 .result.show {
     display: block;
-    animation: slideIn 0.3s ease;
 }
 
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.result.safe {
+    background: rgba(99, 217, 160, 0.1);
+    border: 1px solid rgba(99, 217, 160, 0.35);
 }
 
-.stats {
-    display: flex;
-    justify-content: space-around;
-    margin: 30px 0;
-    flex-wrap: wrap;
+.result.phishing {
+    background: rgba(255, 107, 122, 0.1);
+    border: 1px solid rgba(255, 107, 122, 0.4);
 }
 
-.stat-item {
-    text-align: center;
+.result ul {
+    padding-left: 20px;
+    margin: 8px 0;
+}
+
+.features,
+.tech-stack,
+.team {
+    padding: 28px;
+    margin: 22px 0;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.feature-card {
     padding: 20px;
+    border-radius: 14px;
+    background: var(--panel-soft);
+    border: 1px solid var(--border);
 }
 
-.stat-item h3 {
-    font-size: 2.5rem;
-    color: #667eea;
+.feature-card .icon {
+    font-size: 1.7rem;
+    margin-bottom: 8px;
 }
 
-.stat-item p {
-    color: #666;
+.feature-card h3 {
+    margin-bottom: 7px;
+}
+
+.feature-card p,
+.team-info {
+    color: var(--muted);
+}
+
+.tech-grid,
+.team-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.tech-badge,
+.team-member {
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: var(--panel-soft);
+    border: 1px solid var(--border);
+}
+
+.team-member {
+    min-width: 110px;
+    text-align: center;
+}
+
+.team-info {
+    margin-top: 16px;
 }
 
 footer {
     text-align: center;
-    padding: 30px;
-    color: white;
-    margin-top: 40px;
+    padding: 28px 16px 42px;
+    color: var(--muted);
 }
 
 footer a {
     color: white;
-    text-decoration: underline;
-    margin: 0 10px;
 }
 
-@media (max-width: 768px) {
-    header h1 {
-        font-size: 2rem;
+@media (max-width: 700px) {
+    .container {
+        width: min(100% - 20px, 1100px);
     }
-    
-    .main-content {
+
+    .hero,
+    .demo-box,
+    .features,
+    .tech-stack,
+    .team {
         padding: 20px;
-    }
-    
-    .feature-grid {
-        grid-template-columns: 1fr;
     }
 }
