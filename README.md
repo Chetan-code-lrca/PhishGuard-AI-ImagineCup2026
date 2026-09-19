@@ -1,3 +1,5 @@
+[![CI](https://github.com/Chetan-code-lrca/PhishGuard-AI-ImagineCup2026/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/Chetan-code-lrca/PhishGuard-AI-ImagineCup2026/actions/workflows/ci-cd.yml)
+
 # PhishGuard AI
 
 PhishGuard AI is a phishing-detection project built around URL and email analysis. It was developed for Microsoft Imagine Cup 2026 and includes a browser demo, Python ML/NLP work, and backend/Azure experiments.
