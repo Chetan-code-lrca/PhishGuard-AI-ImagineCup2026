@@ -7,12 +7,15 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.10', '3.11']
+        python-version: ["3.10", "3.11"]
 
     steps:
       - name: Checkout
@@ -32,10 +35,18 @@ jobs:
       - name: Check Python syntax
         run: python -m compileall -q src
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Validate browser JavaScript
+        run: node --check app.js
+
       - name: Run tests
         run: |
           if [ -d tests ] && find tests -type f -name 'test_*.py' -print -quit | grep -q .; then
             python -m pytest tests/ --cov=src/ --cov-report=xml
           else
-            echo "No Python test files found; syntax check completed successfully."
+            echo "No Python test files found; syntax checks completed successfully."
           fi
