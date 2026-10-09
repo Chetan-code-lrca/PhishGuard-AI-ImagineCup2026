@@ -52,6 +52,7 @@
         let score = 0;
         const reasons = [];
         const hostname = parsed.hostname.toLowerCase().replace(/^\[|\]$/g, '');
+        const normalizedHostname = hostname.endsWith('.') ? hostname.slice(0, -1) : hostname;
 
         if (parsed.protocol !== 'https:') {
             score += 30;
@@ -59,7 +60,7 @@
         }
 
         // Inspect the parsed hostname, not arbitrary URL path/query text.
-        if (isIPv4Address(hostname) || hostname.includes(':')) {
+        if (isIPv4Address(normalizedHostname) || normalizedHostname.includes(':')) {
             score += 25;
             reasons.push('Uses an IP address as the hostname');
         }
@@ -76,7 +77,7 @@
             reasons.push('Unusually long URL');
         }
 
-        if (shorteners.some(domain => hostname === domain || hostname.endsWith('.' + domain))) {
+        if (shorteners.some(domain => normalizedHostname === domain || normalizedHostname.endsWith('.' + domain))) {
             score += 15;
             reasons.push('Uses a common URL shortener');
         }
