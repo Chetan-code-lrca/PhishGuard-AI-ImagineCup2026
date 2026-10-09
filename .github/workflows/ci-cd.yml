@@ -41,7 +41,12 @@ jobs:
           node-version: 22
 
       - name: Validate browser JavaScript
-        run: node --check app.js
+        run: |
+          node --check src/browser-analysis.js
+          node --check app.js
+
+      - name: Test browser analysis rules
+        run: node --test tests-js/*.test.cjs
 
       - name: Run tests
         run: |
