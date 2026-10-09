@@ -36,6 +36,10 @@ test('matches URL shorteners by hostname boundaries', () => {
     assert.equal(shortener.score, 15);
     assert.ok(shortener.reasons.includes('Uses a common URL shortener'));
 
+    const rootDot = analyzeURL('https://bit.ly./abc123');
+    assert.equal(rootDot.score, 15);
+    assert.ok(rootDot.reasons.includes('Uses a common URL shortener'));
+
     const deceptive = analyzeURL('https://bit.ly.attacker.example/login');
     assert.equal(deceptive.score, 0);
     assert.ok(!deceptive.reasons.includes('Uses a common URL shortener'));
