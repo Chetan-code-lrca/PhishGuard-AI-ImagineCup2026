@@ -21,7 +21,7 @@
     const suspiciousURLPatterns = [
         { pattern: /@/, reason: 'Contains an @ symbol' },
         { pattern: /(?:-.*){3,}/, reason: 'Contains an unusual concentration of hyphens' },
-        { pattern: /\\d{4,}/, reason: 'Contains a long numeric sequence' }
+        { pattern: /\d{4,}/, reason: 'Contains a long numeric sequence' }
     ];
 
     const shorteners = ['bit.ly', 'tinyurl.com', 't.co'];
@@ -29,7 +29,7 @@
     function isIPv4Address(hostname) {
         const parts = hostname.split('.');
         return parts.length === 4 &&
-            parts.every(part => /^\\d{1,3}$/.test(part) && Number(part) >= 0 && Number(part) <= 255);
+            parts.every(part => /^\d{1,3}$/.test(part) && Number(part) >= 0 && Number(part) <= 255);
     }
 
     function analyzeURL(input) {
@@ -51,7 +51,7 @@
 
         let score = 0;
         const reasons = [];
-        const hostname = parsed.hostname.toLowerCase().replace(/^\\[|\\]$/g, '');
+        const hostname = parsed.hostname.toLowerCase().replace(/^\[|\]$/g, '');
 
         if (parsed.protocol !== 'https:') {
             score += 30;
@@ -107,7 +107,7 @@
         const urgencyWords = ['immediately', 'urgent', 'expires', 'deadline'];
         score += urgencyWords.filter(word => emailText.includes(word)).length * 15;
 
-        const grammarIssues = (emailText.match(/[.!?]\\s*[a-z]/g) || []).length;
+        const grammarIssues = (emailText.match(/[.!?]\s*[a-z]/g) || []).length;
         if (grammarIssues > 2) {
             score += 15;
         }
