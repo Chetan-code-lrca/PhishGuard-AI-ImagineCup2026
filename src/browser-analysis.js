@@ -18,10 +18,10 @@
         'social security', 'account', 'billing'
     ];
 
-    const suspiciousURLPatterns = [
-        { pattern: /@/, reason: 'Contains an @ symbol' },
-        { pattern: /(?:-.*){3,}/, reason: 'Contains an unusual concentration of hyphens' },
-        { pattern: /\d{4,}/, reason: 'Contains a long numeric sequence' }
+    // Hostname-only patterns avoid flagging normal paths and query parameters.
+    const suspiciousHostPatterns = [
+        { pattern: /(?:-.*){3,}/, reason: 'Contains an unusual concentration of hyphens in the hostname' },
+        { pattern: /\d{4,}/, reason: 'Contains a long numeric sequence in the hostname' }
     ];
 
     const shorteners = ['bit.ly', 'tinyurl.com', 't.co'];
@@ -59,14 +59,21 @@
             reasons.push('Not using HTTPS');
         }
 
-        // Inspect the parsed hostname, not arbitrary URL path/query text.
         if (isIPv4Address(normalizedHostname) || normalizedHostname.includes(':')) {
             score += 25;
             reasons.push('Uses an IP address as the hostname');
         }
 
-        for (const signal of suspiciousURLPatterns) {
-            if (signal.pattern.test(value)) {
+        // URL credentials are easy to overlook in strings such as
+        // https://trusted.example@attacker.example/. The parsed hostname is
+        // attacker.example, while username/password reveal the deception.
+        if (parsed.username || parsed.password) {
+            score += 25;
+            reasons.push('Contains embedded credentials in the URL');
+        }
+
+        for (const signal of suspiciousHostPatterns) {
+            if (signal.pattern.test(normalizedHostname)) {
                 score += 25;
                 reasons.push(signal.reason);
             }
