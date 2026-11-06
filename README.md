@@ -2,65 +2,36 @@
 
 # PhishGuard AI
 
-PhishGuard AI is a phishing-detection project built around URL and email analysis. It was developed for Microsoft Imagine Cup 2026 and includes a browser demo, Python ML/NLP work, and backend/Azure experiments.
+**A browser-only phishing-indicator triage demo.** PhishGuard analyzes pasted URLs and email text using a small, explainable set of heuristic rules. It does not fetch submitted URLs, contact a reputation service, load a trained model, or send the analyzed text to a backend.
 
-## What is in the repository
+The working browser demo is intentionally narrower than the original Imagine Cup project concept. The Python, ML, NLP, API, and Azure configuration files in this repository are exploratory scaffolding; they are not a currently supported end-to-end service.
 
-There are two main parts to the project.
+## What works today
 
-### Browser demo
+| Capability | Current behavior |
+| --- | --- |
+| URL analysis | Parses HTTP/HTTPS URLs and scores configured hostname and URL signals |
+| Email-text analysis | Checks the subject, sender text, and body for configured phishing-related keywords and urgency signals |
+| Scoring | Produces a heuristic risk score, capped at 100, with matched indicators |
+| Data processing | Runs locally in the browser; the demo does not submit input to a backend |
+| External reputation | Not implemented |
+| Machine-learning inference | Not implemented in the working browser demo |
+| Mailbox, gateway, or SIEM integration | Not implemented |
 
-The root of the repository contains a plain HTML/CSS/JavaScript interface for trying the phishing checks locally.
+The configured URL signals include non-HTTPS URLs, IP-address hosts, embedded credentials, unusually patterned hostnames, long URLs, and common URL shorteners. Email scoring uses a fixed keyword list and simple text heuristics.
 
-The intended checks include:
+## Important interpretation and limitations
 
-- URL structure and HTTPS usage
-- suspicious URL patterns
-- long URLs and common URL shorteners
-- phishing-related words in email text
-- urgency indicators in email content
+- A **lower-risk result is not a safe verdict**. It only means that the configured rules did not find enough signals to cross the demo's threshold.
+- A high score is an investigation lead, not proof of phishing.
+- The demo does not resolve DNS, follow redirects, inspect TLS certificates, fetch page content, check domain age, or query threat-intelligence feeds.
+- Email analysis does not connect to an inbox or verify sender authentication such as SPF, DKIM, or DMARC.
+- The score is not a calibrated probability and has not been validated as a production detection model.
+- Do not use this demo as the sole control for an organization's email security, web filtering, incident response, or access decisions.
 
-The browser scoring is heuristic and runs locally. It does not query a trained model or a threat-intelligence service.
+## Run locally
 
-
-### Python project
-
-The Python side contains the project's machine-learning, NLP, API, Azure, database, and testing work. The dependency file includes:
-
-- NumPy, pandas, scikit-learn
-- PyTorch and Transformers
-- NLTK and spaCy
-- Flask and FastAPI
-- Azure ML and Azure AI SDKs
-- SQLAlchemy
-- pytest and coverage tools
-
-These components are at different stages of development; they are not all part of one currently deployed application.
-
-## Repository layout
-
-```text
-PhishGuard-AI-ImagineCup2026/
-├── app.js
-├── index.html
-├── styles.css
-├── requirements.txt
-├── .env.example
-├── src/
-│   ├── models/
-│   ├── api/
-│   ├── services/
-│   └── ...
-├── .github/
-├── LICENSE
-└── README.md
-```
-
-The `src/` tree contains the ML, API, service, and supporting implementation work developed during the project.
-
-## Run the browser files locally
-
-Because the root interface is a static site, no Node.js setup is required just to serve it.
+Requirements: a modern browser and Python 3 (only to serve the static files).
 
 ```bash
 git clone https://github.com/Chetan-code-lrca/PhishGuard-AI-ImagineCup2026.git
@@ -68,100 +39,51 @@ cd PhishGuard-AI-ImagineCup2026
 python3 -m http.server 8000
 ```
 
-Windows PowerShell:
+On Windows PowerShell:
 
 ```powershell
 py -m http.server 8000
 ```
 
-Then open:
+Open [http://localhost:8000](http://localhost:8000).
+
+No `npm install`, Python package installation, API key, or database is required for the browser demo.
+
+## Run the automated tests
+
+The URL and email analysis rules are shared with Node's built-in test runner.
+
+```bash
+node --check src/browser-analysis.js
+node --check app.js
+node --test tests-js/*.test.cjs
+```
+
+GitHub Actions runs the browser JavaScript checks and regression tests on pushes and pull requests. The repository's Python scaffolding is not part of the current browser-demo test path.
+
+## Privacy and safe handling
+
+The current browser demo processes the text in the page and does not make an application API request. Use a local copy for sensitive test material. A hosted static site still involves normal hosting and browser infrastructure; review those providers' policies before handling any confidential data.
+
+Never paste passwords, authentication tokens, private customer messages, or other confidential information into an analysis page unless your organization's policy permits it. Do not open suspicious links to test them.
+
+## Repository layout
 
 ```text
-http://localhost:8000
+PhishGuard-AI-ImagineCup2026/
+├── app.js                         # Browser UI and result rendering
+├── index.html                     # Static application page
+├── styles.css                     # Application styles
+├── src/
+│   └── browser-analysis.js        # Shared URL/email heuristic rules
+├── tests-js/
+│   └── browser-analysis.test.cjs  # Node.js regression tests
+├── .github/workflows/ci-cd.yml    # Browser checks and tests
+├── requirements.txt              # Exploratory Python dependency list
+└── .env.example                   # Placeholder configuration; not used by demo
 ```
 
-## Set up the Python environment
-
-Use a virtual environment for the Python work:
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-```
-
-Windows PowerShell:
-
-```powershell
-py -m venv .venv
-.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-```
-
-The current `requirements.txt` is shared across the ML, NLP, API, Azure, database, and testing code.
-
-## Environment variables
-
-The repository provides `.env.example` for components that need external services.
-
-Copy it to a local `.env` file:
-
-```bash
-cp .env.example .env
-```
-
-PowerShell:
-
-```powershell
-Copy-Item .env.example .env
-```
-
-Keep real API keys, passwords, and cloud credentials out of Git. Only the example variable names belong in the repository.
-
-## Testing
-
-Python tests can be run with:
-
-```bash
-python -m pytest
-```
-
-For coverage:
-
-```bash
-python -m pytest --cov
-```
-
-The static browser files can be served with the commands above and checked in a browser.
-
-## How the current browser scoring works
-
-The JavaScript demo assigns a risk score from a small set of URL and email signals.
-
-For URLs it checks things such as:
-
-- missing HTTPS
-- IP-address URLs
-- repeated `@` or hyphen patterns
-- long numeric sequences
-- unusually long URLs
-- common URL shorteners
-
-For email text it checks phishing-related keywords, urgency words, and a simple punctuation/grammar heuristic.
-
-A low score should not be treated as proof that a message or URL is safe.
-
-## Security
-
-This project is intended for development and demonstration. Do not paste passwords, authentication tokens, private email, or other confidential information into a phishing-analysis tool unless the data is safe to share with the service being used.
-
-Treat suspicious links as untrusted. Do not open them simply to test the detector.
-
-## Current status
-
-The root browser demo is a self-contained heuristic URL and email analyzer. The wider repository contains the Python, ML, NLP, API, Azure, database, and testing work from the project at different stages of development.
+The current Python source tree does not yet provide a runnable backend or trained-model inference service. Do not configure the placeholder Azure values as though they enable a supported service.
 
 ## Team
 
@@ -172,4 +94,4 @@ The root browser demo is a self-contained heuristic URL and email analyzer. The 
 
 ## License
 
-MIT License. See `LICENSE` for the full terms.
+MIT License. See [LICENSE](LICENSE) for the terms.
