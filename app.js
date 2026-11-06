@@ -16,17 +16,17 @@ function analyzeURL() {
     const url = input.value.trim();
 
     if (!url) {
-        setResult('safe', 'Enter a URL', 0, '<p>Please enter a URL to analyze.</p>');
+        setResult('neutral', 'Enter a URL', 0, '<p>Please enter a URL to analyze.</p>');
         return;
     }
 
     const analysis = window.PhishGuardAnalysis.analyzeURL(url);
     if (!analysis.valid) {
-        setResult('phishing', 'Invalid URL', 0, '<p>Please enter a complete HTTP or HTTPS URL to analyze.</p>');
+        setResult('neutral', 'Invalid URL', 0, '<p>Please enter a complete HTTP or HTTPS URL to analyze.</p>');
         return;
     }
 
-    setResult('safe', 'Analyzing URL...', 0, '<p>Please wait.</p>');
+    setResult('neutral', 'Analyzing URL...', 0, '<p>Please wait.</p>');
     setTimeout(() => {
         const signalList = analysis.reasons.length
             ? '<p><strong>Signals detected:</strong></p><ul>' +
@@ -60,12 +60,12 @@ function analyzeEmail() {
     const body = document.getElementById('email-body').value.trim();
 
     if (!(subject + sender + body).trim()) {
-        setResult('safe', 'Enter email content', 0, '<p>Please enter email content to analyze.</p>');
+        setResult('neutral', 'Enter email content', 0, '<p>Please enter email content to analyze.</p>');
         return;
     }
 
     const analysis = window.PhishGuardAnalysis.analyzeEmail(subject, sender, body);
-    setResult('safe', 'Analyzing email...', 0, '<p>Please wait.</p>');
+    setResult('neutral', 'Analyzing email...', 0, '<p>Please wait.</p>');
     setTimeout(() => {
         const keywordText = analysis.detectedKeywords.length
             ? '<p><strong>Matched terms:</strong> ' + analysis.detectedKeywords.join(', ') + '</p>'
