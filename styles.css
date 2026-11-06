@@ -165,9 +165,14 @@ header p {
     display: block;
 }
 
-.result.safe {
+.result.low-risk {
     background: rgba(99, 217, 160, 0.1);
     border: 1px solid rgba(99, 217, 160, 0.35);
+}
+
+.result.neutral {
+    background: rgba(184, 192, 217, 0.08);
+    border: 1px solid var(--border);
 }
 
 .result.phishing {
