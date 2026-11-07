@@ -67,7 +67,8 @@ GitHub Actions runs these checks on pushes and pull requests.
 │   └── data_processing/
 │       └── __init__.py
 ├── tests-js/
-│   └── browser-analysis.test.cjs
+│   ├── browser-analysis.test.cjs
+│   └── static-ui.test.cjs
 ├── requirements.txt
 └── .env.example
 ```
