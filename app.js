@@ -1,14 +1,56 @@
 // PhishGuard AI - Browser demo
 
-// Analysis rules are shared with the Node regression tests.
+// Render all result content as text nodes. Never interpolate user-controlled
+// content into HTML, even though the current analysis rules return fixed labels.
+function textElement(tag, text) {
+    const element = document.createElement(tag);
+    element.textContent = text;
+    return element;
+}
+
+function createMessage(text) {
+    return textElement('p', text);
+}
+
+function createSignalBody(label, values, emptyText, warning, asList = false) {
+    const fragment = document.createDocumentFragment();
+
+    if (values.length) {
+        const labelParagraph = document.createElement('p');
+        const strong = textElement('strong', label);
+        labelParagraph.appendChild(strong);
+        fragment.appendChild(labelParagraph);
+
+        if (asList) {
+            const list = document.createElement('ul');
+            values.forEach(value => list.appendChild(textElement('li', value)));
+            fragment.appendChild(list);
+        } else {
+            const valueParagraph = textElement('p', values.join(', '));
+            fragment.appendChild(valueParagraph);
+        }
+    } else {
+        fragment.appendChild(createMessage(emptyText));
+    }
+
+    const warningParagraph = document.createElement('p');
+    const emphasis = textElement('em', warning);
+    warningParagraph.appendChild(emphasis);
+    fragment.appendChild(warningParagraph);
+
+    return fragment;
+}
 
 function setResult(type, heading, score, body) {
     const result = document.getElementById('result');
     result.className = 'result ' + type + ' show';
-    result.innerHTML =
-        '<h3>' + heading + '</h3>' +
-        '<p><strong>Risk score: ' + score + '%</strong></p>' +
-        body;
+
+    const title = textElement('h3', heading);
+    const scoreParagraph = document.createElement('p');
+    const scoreLabel = textElement('strong', 'Risk score: ' + score + '%');
+    scoreParagraph.appendChild(scoreLabel);
+
+    result.replaceChildren(title, scoreParagraph, body);
 }
 
 function analyzeURL() {
@@ -16,39 +58,44 @@ function analyzeURL() {
     const url = input.value.trim();
 
     if (!url) {
-        setResult('safe', 'Enter a URL', 0, '<p>Please enter a URL to analyze.</p>');
+        setResult('safe', 'Enter a URL', 0, createMessage('Please enter a URL to analyze.'));
         return;
     }
 
     const analysis = window.PhishGuardAnalysis.analyzeURL(url);
     if (!analysis.valid) {
-        setResult('phishing', 'Invalid URL', 0, '<p>Please enter a complete HTTP or HTTPS URL to analyze.</p>');
+        setResult(
+            'phishing',
+            'Invalid URL',
+            0,
+            createMessage('Please enter a complete HTTP or HTTPS URL to analyze.'),
+        );
         return;
     }
 
-    setResult('safe', 'Analyzing URL...', 0, '<p>Please wait.</p>');
+    setResult('safe', 'Analyzing URL...', 0, createMessage('Please wait.'));
     setTimeout(() => {
-        const signalList = analysis.reasons.length
-            ? '<p><strong>Signals detected:</strong></p><ul>' +
-              analysis.reasons.map(reason => '<li>' + reason + '</li>').join('') +
-              '</ul>'
-            : '<p>No configured suspicious signals were detected.</p>';
+        const signalBody = createSignalBody(
+            'Signals detected:',
+            analysis.reasons,
+            'No configured suspicious signals were detected.',
+            'This score is only a heuristic; it does not prove that a URL is safe.',
+            true,
+        );
 
         if (analysis.score > 50) {
             setResult(
                 'phishing',
-                '🚨 High-risk URL indicators',
+                'High-risk URL indicators',
                 analysis.score,
-                signalList +
-                '<p><em>Do not enter credentials or sensitive information on a suspicious site.</em></p>'
+                signalBody,
             );
         } else {
             setResult(
                 'safe',
-                '✅ Lower-risk result',
+                'Lower-risk result',
                 analysis.score,
-                signalList +
-                '<p><em>This score is only a heuristic; it does not prove that a URL is safe.</em></p>'
+                signalBody,
             );
         }
     }, 500);
@@ -60,32 +107,38 @@ function analyzeEmail() {
     const body = document.getElementById('email-body').value.trim();
 
     if (!(subject + sender + body).trim()) {
-        setResult('safe', 'Enter email content', 0, '<p>Please enter email content to analyze.</p>');
+        setResult(
+            'safe',
+            'Enter email content',
+            0,
+            createMessage('Please enter email content to analyze.'),
+        );
         return;
     }
 
     const analysis = window.PhishGuardAnalysis.analyzeEmail(subject, sender, body);
-    setResult('safe', 'Analyzing email...', 0, '<p>Please wait.</p>');
+    setResult('safe', 'Analyzing email...', 0, createMessage('Please wait.'));
     setTimeout(() => {
-        const keywordText = analysis.detectedKeywords.length
-            ? '<p><strong>Matched terms:</strong> ' + analysis.detectedKeywords.join(', ') + '</p>'
-            : '<p>No configured phishing keywords were detected.</p>';
+        const signalBody = createSignalBody(
+            'Matched terms:',
+            analysis.detectedKeywords,
+            'No configured phishing keywords were detected.',
+            'This score is only a heuristic; it does not prove that an email is safe.',
+        );
 
         if (analysis.score > 40) {
             setResult(
                 'phishing',
-                '🚨 Phishing indicators detected',
+                'Phishing indicators detected',
                 analysis.score,
-                keywordText +
-                '<p><em>Verify the sender through a trusted channel before taking action.</em></p>'
+                signalBody,
             );
         } else {
             setResult(
                 'safe',
-                '✅ Lower-risk result',
+                'Lower-risk result',
                 analysis.score,
-                keywordText +
-                '<p><em>This score is only a heuristic; it does not prove that an email is safe.</em></p>'
+                signalBody,
             );
         }
     }, 500);
