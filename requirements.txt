@@ -1,3 +1,11 @@
+# LEGACY / EXPERIMENTAL DEPENDENCY INVENTORY
+# Not required by the current static browser demo.
+# The repository does not currently contain a runnable Python API, ML training
+# pipeline, or inference service. These version ranges are not a lockfile and
+# have not been validated as a reproducible environment. Do not install this
+# file to run the browser demo. Rebuild a minimal, tested dependency set if
+# Python backend work is resumed.
+
 # Core Data Science Libraries
 numpy>=1.19.0,<1.25.0
 pandas>=1.1.0,<2.1.0
